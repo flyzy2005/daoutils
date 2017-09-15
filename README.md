@@ -223,3 +223,7 @@ interface IBaseDao<T> {
     int countByParams(JSONObject condition);
 }
 ```
+## Dependency
+```
+compile 'cn.flyzy2005:daoutils:1.0.0'
+```
