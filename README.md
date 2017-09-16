@@ -225,5 +225,5 @@ interface IBaseDao<T> {
 ```
 ## Dependency
 ```
-compile 'cn.flyzy2005:daoutils:1.0.0'
+compile 'cn.flyzy2005:daoutils:1.0.1'
 ```
