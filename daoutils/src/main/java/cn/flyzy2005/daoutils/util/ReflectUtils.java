@@ -119,7 +119,13 @@ public class ReflectUtils {
                 ColumnAlias alias = field.getAnnotation(ColumnAlias.class);
                 columnName = alias.columnName();
             }
-            int columnIndex = cursor.getColumnIndex(columnName);
+
+            int columnIndex = -1;
+            String[] columns = cursor.getColumnNames();
+            for (String column : columns) {
+                if (column.equalsIgnoreCase(columnName))
+                    columnIndex = cursor.getColumnIndex(column);
+            }
             if (columnIndex == -1)
                 continue;
 
