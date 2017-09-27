@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -135,8 +136,15 @@ public class ReflectUtils {
                     case Cursor.FIELD_TYPE_NULL:
                         continue;
                     case Cursor.FIELD_TYPE_FLOAT:
-                        clazz.getMethod("set" + upperFirstLetter(fieldName), field.getType())
-                                .invoke(t, cursor.getFloat(columnIndex));
+                        Class fieldType = field.getType();
+                        if (fieldType == float.class || fieldType == Float.class)
+                            clazz.getMethod("set" + upperFirstLetter(fieldName), field.getType())
+                                    .invoke(t, cursor.getFloat(columnIndex));
+                        else {//handle with float to double precision error
+                            double d = new BigDecimal(String.valueOf(cursor.getFloat(columnIndex))).doubleValue();
+                            clazz.getMethod("set" + upperFirstLetter(fieldName), field.getType())
+                                    .invoke(t, d);
+                        }
                         break;
                     case Cursor.FIELD_TYPE_BLOB:
                         clazz.getMethod("set" + upperFirstLetter(fieldName), field.getType())
